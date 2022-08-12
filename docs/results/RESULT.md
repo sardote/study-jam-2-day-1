@@ -14,19 +14,19 @@
 - отображение сообщений, включающих в себя геолокацию, с маркеров на миникарте в чате;
 
 <p align="center">
-<img src="./docs/assets/final/map.png" width="400" alt="Show map coord" />
+<img src="./assets/final/map.png" width="400" alt="Show map coord" />
 </p>
 
 - отображение изображений в сообщении с фоновой подгрузкой;
 
 <p align="center">
-<img src="./docs/assets/final/image.png" width="400" alt="Show images" />
+<img src="./assets/final/image.png" width="400" alt="Show images" />
 </p>
 
 - пользовательский интерфейс для экрана топиков, а также создание новых;
 
 <p align="center">
-<img src="./docs/assets/final/topics.png" width="400" alt="Show topics" />
+<img src="./assets/final/topics.png" width="400" alt="Show topics" />
 </p>
 
 [здесь оставьте ссылки на скринкаст/скриншоты, можно в Github-репозитории или в отдельном обалке]
