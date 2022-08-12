@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:surf_practice_chat_flutter/features/chat/models/chat_geolocation_geolocation_dto.dart';
 import 'package:surf_practice_chat_flutter/features/chat/models/chat_message_dto.dart';
 import 'package:surf_practice_chat_flutter/features/chat/models/chat_message_location_dto.dart';
 import 'package:surf_practice_chat_flutter/features/chat/models/chat_user_dto.dart';
@@ -178,6 +179,40 @@ class _ChatMessage extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
+  Widget mapImage(ChatGeolocationDto location) {
+    final lat = location.latitude;
+    final lng = location.longitude;
+    if (lat < -90 || lat > 90) {
+      return const Text(
+        'Ошибка координат',
+        style: TextStyle(color: Colors.red),
+      );
+    }
+    return FlutterMap(
+      options: MapOptions(
+        center: LatLng(lat, lng),
+        zoom: 15,
+      ),
+      layers: [
+        TileLayerOptions(
+          urlTemplate: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+          subdomains: ['a', 'b', 'c'],
+          userAgentPackageName: 'com.surf.jam2',
+        ),
+        MarkerLayerOptions(markers: [
+          Marker(
+              point: LatLng(lat, lng),
+              builder: (context) {
+                return const Icon(
+                  Icons.pin_drop_sharp,
+                  color: Colors.red,
+                );
+              })
+        ])
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
@@ -215,44 +250,8 @@ class _ChatMessage extends StatelessWidget {
                     SizedBox(
                       height: 200,
                       width: double.infinity,
-                      child: FlutterMap(
-                        options: MapOptions(
-                          center: LatLng(
-                            (chatData as ChatMessageGeolocationDto)
-                                .location
-                                .latitude,
-                            (chatData as ChatMessageGeolocationDto)
-                                .location
-                                .longitude,
-                          ),
-                          zoom: 15,
-                        ),
-                        layers: [
-                          TileLayerOptions(
-                            urlTemplate:
-                                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-                            subdomains: ['a', 'b', 'c'],
-                            userAgentPackageName: 'com.surf.jam2',
-                          ),
-                          MarkerLayerOptions(markers: [
-                            Marker(
-                                point: LatLng(
-                                  (chatData as ChatMessageGeolocationDto)
-                                      .location
-                                      .latitude,
-                                  (chatData as ChatMessageGeolocationDto)
-                                      .location
-                                      .longitude,
-                                ),
-                                builder: (context) {
-                                  return const Icon(
-                                    Icons.pin_drop_sharp,
-                                    color: Colors.red,
-                                  );
-                                })
-                          ])
-                        ],
-                      ),
+                      child: mapImage(
+                          (chatData as ChatMessageGeolocationDto).location),
                     ),
                   Text(chatData.message ?? ''),
                 ],
