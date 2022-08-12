@@ -100,11 +100,6 @@ class _ChatTextField extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  // void sendPhoto() async {
-  //   var status = await Permission.camera.isGranted;
-  //   if (status) {}
-  // }
-
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
@@ -121,8 +116,8 @@ class _ChatTextField extends StatelessWidget {
         child: Row(
           children: [
             IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.photo_camera_outlined),
+              onPressed: () {}, //=> payLoad(),
+              icon: const Icon(Icons.attach_file),
               color: colorScheme.onSurface,
             ),
             Expanded(

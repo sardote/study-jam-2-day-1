@@ -29,7 +29,6 @@ class _AuthScreenState extends State<AuthScreen> {
   final loginField = TextEditingController(text: 'sardote');
   final passwordField = TextEditingController(text: '2Sc7rvXOGMHg');
   late TokenDto token;
-  
 
   void _login() async {
     final login = loginField.text;
@@ -45,14 +44,14 @@ class _AuthScreenState extends State<AuthScreen> {
     }
   }
 
-  void _showSnakBar(final String message){
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('$message')));
+  void _showSnakBar(final String message) {
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text('$message')));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Login')),
       body: Padding(
         padding: const EdgeInsets.all(12.0),
         child: Column(
@@ -60,7 +59,6 @@ class _AuthScreenState extends State<AuthScreen> {
           children: [
             TextField(
               controller: loginField,
-              
               decoration: const InputDecoration(
                 prefixIcon: Icon(Icons.person),
                 border: OutlineInputBorder(),
@@ -78,11 +76,13 @@ class _AuthScreenState extends State<AuthScreen> {
               ),
             ),
             const SizedBox(height: 10),
-            TextButton(
-              onPressed: _login,
-              child: const Text('Далее'),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: _login,
+                child: const Text('Далее'),
+              ),
             ),
-
           ],
         ),
       ),
