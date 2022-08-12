@@ -13,10 +13,12 @@ class ChatMessageGeolocationDto extends ChatMessageDto {
     required ChatUserDto chatUserDto,
     required this.location,
     required String message,
+    required List<String> imageUrl,
     required DateTime createdDate,
   }) : super(
           chatUserDto: chatUserDto,
           message: message,
+          imageUrl: imageUrl,
           createdDateTime: createdDate,
         );
 
@@ -28,6 +30,7 @@ class ChatMessageGeolocationDto extends ChatMessageDto {
         super(
           createdDateTime: sjMessageDto.created,
           message: sjMessageDto.text,
+          imageUrl: sjMessageDto.images,
           chatUserDto: ChatUserDto.fromSJClient(sjUserDto),
         );
 

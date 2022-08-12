@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+import 'package:surf_practice_chat_flutter/features/chat/models/chat_message_location_dto.dart';
 import 'package:surf_practice_chat_flutter/features/chat/models/chat_user_dto.dart';
 import 'package:surf_practice_chat_flutter/features/chat/models/chat_user_local_dto.dart';
 import 'package:surf_study_jam/surf_study_jam.dart';
@@ -9,7 +11,7 @@ class ChatMessageDto {
 
   /// Chat message string.
   final String? message;
-
+  final List<String>? imageUrl;
   /// Creation date and time.
   final DateTime createdDateTime;
 
@@ -17,6 +19,7 @@ class ChatMessageDto {
   const ChatMessageDto({
     required this.chatUserDto,
     required this.message,
+    required this.imageUrl,
     required this.createdDateTime,
   });
 
@@ -29,6 +32,7 @@ class ChatMessageDto {
             ? ChatUserLocalDto.fromSJClient(sjUserDto)
             : ChatUserDto.fromSJClient(sjUserDto),
         message = sjMessageDto.text,
+        imageUrl= sjMessageDto.images,
         createdDateTime = sjMessageDto.created;
 
   @override

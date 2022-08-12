@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:surf_practice_chat_flutter/features/chat/models/chat_message_dto.dart';
+import 'package:surf_practice_chat_flutter/features/chat/models/chat_message_location_dto.dart';
 import 'package:surf_practice_chat_flutter/features/chat/models/chat_user_dto.dart';
 import 'package:surf_practice_chat_flutter/features/chat/models/chat_user_local_dto.dart';
 import 'package:surf_practice_chat_flutter/features/chat/repository/chat_repository.dart';
+
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 
 /// Main screen of chat app, containing messages.
 class ChatScreen extends StatefulWidget {
@@ -95,6 +99,11 @@ class _ChatTextField extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
+  // void sendPhoto() async {
+  //   var status = await Permission.camera.isGranted;
+  //   if (status) {}
+  // }
+
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
@@ -110,6 +119,11 @@ class _ChatTextField extends StatelessWidget {
         ),
         child: Row(
           children: [
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.photo_camera_outlined),
+              color: colorScheme.onSurface,
+            ),
             Expanded(
               child: TextField(
                 controller: _textEditingController,
@@ -168,7 +182,9 @@ class _ChatMessage extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     return Material(
-      color: chatData.chatUserDto is ChatUserLocalDto ? colorScheme.primary.withOpacity(.1) : null,
+      color: chatData.chatUserDto is ChatUserLocalDto
+          ? colorScheme.primary.withOpacity(.1)
+          : null,
       child: Padding(
         padding: const EdgeInsets.symmetric(
           horizontal: 18,
@@ -188,6 +204,56 @@ class _ChatMessage extends StatelessWidget {
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 4),
+                  if (chatData.imageUrl?.isNotEmpty ?? false)
+                    ...chatData.imageUrl!.map(
+                      (image) => FadeInImage.assetNetwork(
+                        placeholder: 'loading.gif',
+                        image: image,
+                      ),
+                    ),
+                  if (chatData is ChatMessageGeolocationDto)
+                    SizedBox(
+                      height: 200,
+                      width: double.infinity,
+                      child: FlutterMap(
+                        options: MapOptions(
+                          center: LatLng(
+                            (chatData as ChatMessageGeolocationDto)
+                                .location
+                                .latitude,
+                            (chatData as ChatMessageGeolocationDto)
+                                .location
+                                .longitude,
+                          ),
+                          zoom: 15,
+                        ),
+                        layers: [
+                          TileLayerOptions(
+                            urlTemplate:
+                                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                            subdomains: ['a', 'b', 'c'],
+                            userAgentPackageName: 'com.surf.jam2',
+                          ),
+                          MarkerLayerOptions(markers: [
+                            Marker(
+                                point: LatLng(
+                                  (chatData as ChatMessageGeolocationDto)
+                                      .location
+                                      .latitude,
+                                  (chatData as ChatMessageGeolocationDto)
+                                      .location
+                                      .longitude,
+                                ),
+                                builder: (context) {
+                                  return const Icon(
+                                    Icons.pin_drop_sharp,
+                                    color: Colors.red,
+                                  );
+                                })
+                          ])
+                        ],
+                      ),
+                    ),
                   Text(chatData.message ?? ''),
                 ],
               ),
